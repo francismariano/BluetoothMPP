@@ -1,12 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.me.bluetoothlibrary2"
         minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
@@ -28,8 +27,76 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3"
+
+    implementation "com.louiscad.splitties:splitties-appctx:$splitties_version"
+    implementation "com.louiscad.splitties:splitties-bitflags:$splitties_version"
+    implementation "com.louiscad.splitties:splitties-checkedlazy:$splitties_version"
+    implementation "com.louiscad.splitties:splitties-lifecycle-coroutines:$splitties_version"
+    implementation "com.louiscad.splitties:splitties-mainthread:$splitties_version"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
 }
+
+kotlin {
+    android("android")
+    // This is for iPhone emulator
+    // Switch here to iosArm64 (or iosArm32) to build library for iPhone device
+    iosX64("ios") {
+        //compilations.main.outputKinds("framework")
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$kotlin_coroutine_version"
+                implementation kotlin('stdlib-common')
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation kotlin('stdlib')
+            }
+        }
+        androidTest {
+            dependencies {
+                implementation kotlin('test')
+                implementation kotlin('test-junit')
+            }
+        }
+        iosMain {
+            //implementation kotlin("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.3.3")
+        }
+        iosTest {
+        }
+    }
+}
+
+// This task attaches native framework built from ios module to Xcode project
+// (see iosApp directory). Don't run this task directly,
+// Xcode runs this task itself during its build process.
+// Before opening the project from iosApp directory in Xcode,
+// make sure all Gradle infrastructure exists (gradle.wrapper, gradlew).
+//task copyFramework {
+//    def buildType = project.findProperty('kotlin.build.type') ?: 'DEBUG'
+//    def target = project.findProperty('kotlin.target') ?: 'ios'
+//    dependsOn kotlin.targets."$target".compilations.main.linkTaskName('FRAMEWORK', buildType)
+//
+//    doLast {
+//        def srcFile = kotlin.targets."$target".compilations.main.getBinary('FRAMEWORK', buildType)
+//        def targetDir = getProperty('configuration.build.dir')
+//        copy {
+//            from srcFile.parent
+//            into targetDir
+//            include 'app.framework/**'
+//            include 'app.framework.dSYM'
+//        }
+//    }
+//}
