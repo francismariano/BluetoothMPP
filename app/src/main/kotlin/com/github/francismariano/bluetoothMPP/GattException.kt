@@ -5,13 +5,9 @@ package com.github.francismariano.bluetoothMPP
 import android.bluetooth.BluetoothGatt
 
 @ExperimentalBleGattCoroutinesCoroutinesApi
-sealed class GattException(message: String? = null) : Exception(message) {
-
-    companion object {
-        /**
-         * See all codes here: [https://android.googlesource.com/platform/external/bluetooth/bluedroid/+/android-5.1.0_r1/stack/include/gatt_api.h]
-         */
-        fun humanReadableStatusCode(statusCode: Int) = when (statusCode) {
+actual sealed class GattException actual constructor(message: String?) : Exception(message) {
+    actual companion object {
+        actual fun humanReadableStatusCode(statusCode: Int) = when (statusCode) {
             BluetoothGatt.GATT_SUCCESS -> "GATT_SUCCESS"
             BluetoothGatt.GATT_READ_NOT_PERMITTED -> "GATT_READ_NOT_PERMITTED"
             BluetoothGatt.GATT_WRITE_NOT_PERMITTED -> "GATT_WRITE_NOT_PERMITTED"
@@ -26,16 +22,3 @@ sealed class GattException(message: String? = null) : Exception(message) {
         }
     }
 }
-
-@ExperimentalBleGattCoroutinesCoroutinesApi
-class OperationInitiationFailedException : GattException()
-
-/** @see BluetoothGatt */
-@ExperimentalBleGattCoroutinesCoroutinesApi
-class OperationFailedException(
-    val statusCode: Int
-) : GattException(
-    "status: ${humanReadableStatusCode(
-        statusCode
-    )}"
-)
