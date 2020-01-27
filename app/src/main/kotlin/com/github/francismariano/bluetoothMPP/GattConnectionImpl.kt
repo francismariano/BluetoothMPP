@@ -3,11 +3,9 @@ package com.github.francismariano.bluetoothMPP
 import android.bluetooth.*
 import android.os.Build.VERSION.SDK_INT
 import androidx.annotation.RequiresApi
-import com.github.francismariano.bluetoothMP.ConnectionClosedException
 import com.github.francismariano.bluetoothMPP.GattConnection.Companion.clientCharacteristicConfiguration
-import com.github.francismariano.bluetoothMP.ExperimentalBleGattCoroutinesCoroutinesApi
-import com.github.francismariano.bluetoothMP.extensions.offerCatching
-import com.github.francismariano.bluetoothMP.extensions.withCloseHandler
+import com.github.francismariano.bluetoothMPP.extensions.offerCatching
+import com.github.francismariano.bluetoothMPP.extensions.withCloseHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.sync.Mutex

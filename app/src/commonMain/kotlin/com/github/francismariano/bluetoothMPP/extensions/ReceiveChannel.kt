@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMP.extensions
+package com.github.francismariano.bluetoothMPP.extensions
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMP
+package com.github.francismariano.bluetoothMPP
 
 import kotlinx.coroutines.CancellationException
 
