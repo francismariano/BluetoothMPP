@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMPP.androidMain
+package com.github.francismariano.bluetoothMPP
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic

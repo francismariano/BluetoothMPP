@@ -2,10 +2,10 @@ package com.francismariano.bluetoothMPP.androidMain.extensions
 
 import android.bluetooth.BluetoothGattService
 import androidx.annotation.RequiresApi
-import com.github.francismariano.bluetoothMPP.androidMain.BGC
-import com.github.francismariano.bluetoothMPP.androidMain.BGD
-import com.github.francismariano.bluetoothMPP.androidMain.GattConnection
-import com.github.francismariano.bluetoothMPP.commonMain.ExperimentalBleGattCoroutinesCoroutinesApi
+import com.github.francismariano.bluetoothMPP.BGC
+import com.github.francismariano.bluetoothMPP.BGD
+import com.github.francismariano.bluetoothMPP.GattConnection
+import com.github.francismariano.bluetoothMP.ExperimentalBleGattCoroutinesCoroutinesApi
 import java.util.*
 
 @RequiresApi(18)

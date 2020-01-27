@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMPP.commonMain
+package com.github.francismariano.bluetoothMP
 
 import kotlinx.coroutines.CancellationException
 
@@ -6,8 +6,4 @@ import kotlinx.coroutines.CancellationException
 class ConnectionClosedException internal constructor(
     cause: Throwable? = null,
     messageSuffix: String = ""
-) : CancellationException("The connection has been irrevocably closed$messageSuffix.") {
-    init {
-        initCause(cause)
-    }
-}
+) : CancellationException("The connection has been irrevocably closed $messageSuffix. Cause - $cause")

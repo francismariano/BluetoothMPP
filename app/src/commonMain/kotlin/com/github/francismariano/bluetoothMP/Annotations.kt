@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMPP.commonMain
+package com.github.francismariano.bluetoothMP
 
 @MustBeDocumented
 @Retention(value = AnnotationRetention.BINARY)

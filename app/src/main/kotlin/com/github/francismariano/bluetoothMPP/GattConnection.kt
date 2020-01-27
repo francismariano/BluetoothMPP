@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMPP.androidMain
+package com.github.francismariano.bluetoothMPP
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothGattService
 import androidx.annotation.RequiresApi
-import com.github.francismariano.bluetoothMPP.androidMain.GattConnection.Companion.invoke
-import com.github.francismariano.bluetoothMPP.commonMain.ExperimentalBleGattCoroutinesCoroutinesApi
+import com.github.francismariano.bluetoothMPP.GattConnection.Companion.invoke
+import com.github.francismariano.bluetoothMP.ExperimentalBleGattCoroutinesCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel

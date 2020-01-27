@@ -1,4 +1,4 @@
-package com.github.francismariano.bluetoothMPP.commonMain.extensions
+package com.github.francismariano.bluetoothMP.extensions
 
 import kotlinx.coroutines.channels.SendChannel
 

@@ -1,9 +1,9 @@
 @file:Suppress("MemberVisibilityCanPrivate")
 
-package com.github.francismariano.bluetoothMPP.androidMain
+package com.github.francismariano.bluetoothMPP
 
 import android.bluetooth.BluetoothGatt
-import com.github.francismariano.bluetoothMPP.commonMain.ExperimentalBleGattCoroutinesCoroutinesApi
+import com.github.francismariano.bluetoothMP.ExperimentalBleGattCoroutinesCoroutinesApi
 
 @ExperimentalBleGattCoroutinesCoroutinesApi
 sealed class GattException(message: String? = null) : Exception(message) {
