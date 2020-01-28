@@ -10,14 +10,7 @@ expect sealed class GattException actual constructor(message: String?) : Excepti
 }
 
 @ExperimentalBleGattCoroutinesCoroutinesApi
-class OperationInitiationFailedException : GattException(null)
+expect class OperationInitiationFailedException : GattException
 
-/** @see BluetoothGatt */
 @ExperimentalBleGattCoroutinesCoroutinesApi
-class OperationFailedException(
-    val statusCode: Int
-) : GattException(
-    "status: ${humanReadableStatusCode(
-        statusCode
-    )}"
-)
+expect class OperationFailedException (statusCode: Int) : GattException

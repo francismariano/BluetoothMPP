@@ -8,3 +8,9 @@ actual sealed class GattException actual constructor(message: String?) : Excepti
         }
     }
 }
+
+@ExperimentalBleGattCoroutinesCoroutinesApi
+actual class OperationInitiationFailedException : GattException(null)
+
+@ExperimentalBleGattCoroutinesCoroutinesApi
+actual class OperationFailedException actual constructor(statusCode: Int) : GattException(null)

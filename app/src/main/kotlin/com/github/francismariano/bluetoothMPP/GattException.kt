@@ -22,3 +22,16 @@ actual sealed class GattException actual constructor(message: String?) : Excepti
         }
     }
 }
+
+@ExperimentalBleGattCoroutinesCoroutinesApi
+actual class OperationInitiationFailedException : GattException(null)
+
+/** @see BluetoothGatt */
+@ExperimentalBleGattCoroutinesCoroutinesApi
+actual class OperationFailedException actual constructor(
+    val statusCode: Int
+) : GattException(
+    "status: ${humanReadableStatusCode(
+        statusCode
+    )}"
+)
