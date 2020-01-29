@@ -1,8 +1,9 @@
+package com.github.francismariano.bluetoothMPP
+
 import androidx.annotation.RequiresApi
-import com.github.francismariano.bluetoothMPP.BGC
-import com.github.francismariano.bluetoothMPP.BGD
-import com.github.francismariano.bluetoothMPP.ExperimentalBleGattCoroutinesCoroutinesApi
-import com.github.francismariano.bluetoothMPP.OperationInitiationFailedException
+import com.github.francismariano.bluetoothMPP.GattConnection.Companion.invoke
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.withTimeout
@@ -32,17 +33,15 @@ import kotlinx.coroutines.withTimeout
 @ExperimentalBleGattCoroutinesCoroutinesApi
 actual interface GattConnection {
     actual companion object {
-//        @RequiresApi(18)
-//        @ObsoleteCoroutinesApi
-//        @ExperimentalCoroutinesApi
-//        actual operator fun invoke(
-//            bluetoothDevice: CMBluetoothDevice,
-//            connectionSettings: ConnectionSettings
-//        ): GattConnection =
-//            GattConnectionImpl(
-//                bluetoothDevice,
-//                connectionSettings
-//            )
+        @RequiresApi(18)
+        @ObsoleteCoroutinesApi
+        @ExperimentalCoroutinesApi
+        operator fun invoke(
+            bluetoothDevice: CMBluetoothDevice
+        ): GattConnection =
+            GattConnectionImpl(
+                bluetoothDevice
+            )
 
         /**
          * The characteristic used to enable notifications on the remote device in the
