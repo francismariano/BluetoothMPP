@@ -1,18 +1,11 @@
-package com.github.francismariano.bluetoothMPP
-
-import android.annotation.SuppressLint
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattDescriptor
-import android.bluetooth.BluetoothGattService
 import androidx.annotation.RequiresApi
-import com.github.francismariano.bluetoothMPP.GattConnection.Companion.invoke
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
+import com.github.francismariano.bluetoothMPP.BGC
+import com.github.francismariano.bluetoothMPP.BGD
+import com.github.francismariano.bluetoothMPP.ExperimentalBleGattCoroutinesCoroutinesApi
+import com.github.francismariano.bluetoothMPP.OperationInitiationFailedException
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.withTimeout
-import java.util.*
 
 /**
  * The entry point of BluetoothGatt with coroutines.
@@ -37,19 +30,19 @@ import java.util.*
  * **For production apps, see [stateChangeChannel].**
  */
 @ExperimentalBleGattCoroutinesCoroutinesApi
-interface GattConnection {
-    companion object {
-        @RequiresApi(18)
-        @ExperimentalCoroutinesApi
-        @ObsoleteCoroutinesApi
-        operator fun invoke(
-            bluetoothDevice: BluetoothDevice,
-            connectionSettings: ConnectionSettings = ConnectionSettings()
-        ): GattConnection =
-            GattConnectionImpl(
-                bluetoothDevice,
-                connectionSettings
-            )
+actual interface GattConnection {
+    actual companion object {
+//        @RequiresApi(18)
+//        @ObsoleteCoroutinesApi
+//        @ExperimentalCoroutinesApi
+//        actual operator fun invoke(
+//            bluetoothDevice: CMBluetoothDevice,
+//            connectionSettings: ConnectionSettings
+//        ): GattConnection =
+//            GattConnectionImpl(
+//                bluetoothDevice,
+//                connectionSettings
+//            )
 
         /**
          * The characteristic used to enable notifications on the remote device in the
@@ -61,26 +54,13 @@ interface GattConnection {
          * (look for `0x2902` or "Client Characteristic Configuration")
          */
         @JvmField
-        val clientCharacteristicConfiguration: UUID =
-            UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
+        actual val clientCharacteristicConfiguration: CMUUID =
+            CMUUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
     }
 
-    @SuppressLint("InlinedApi")
-    class ConnectionSettings(
-        val autoConnect: Boolean = false,
-        val allowAutoConnect: Boolean = autoConnect,
-        val disconnectOnClose: Boolean = true,
-        val transport: Int = BluetoothDevice.TRANSPORT_AUTO,
-        val phy: Int = BluetoothDevice.PHY_LE_1M_MASK
-    ) {
-        init {
-            if (autoConnect) require(allowAutoConnect)
-        }
-    }
+    actual val bluetoothDevice: CMBluetoothDevice
 
-    val bluetoothDevice: BluetoothDevice
-
-    val isConnected: Boolean
+    actual val isConnected: Boolean
     /**
      * Suspends until a connection is established with the target device, or throws if an error
      * happens.
@@ -97,7 +77,7 @@ interface GattConnection {
      * connections too. Call [close] when you don't need the connection anymore, or [disconnect]
      * if you don't need the connection to stay active for some amount of time.
      */
-    suspend fun connect()
+    actual suspend fun connect()
 
     /**
      * Suspends until the target device is disconnected, or throw if an error happens.
@@ -105,7 +85,7 @@ interface GattConnection {
      * Useful if you want to disconnect from the device for a relatively short time and connect
      * back later using this same instance.
      */
-    suspend fun disconnect()
+    actual suspend fun disconnect()
 
     /**
      * No need to disconnect first if you call this method.
@@ -113,10 +93,10 @@ interface GattConnection {
      * This [GattConnection] instance is no longer usable after this has been called, and all
      * coroutines suspended on calls to this instance will receive a cancellation signal.
      */
-    fun close(notifyStateChangeChannel: Boolean = false)
+    actual fun close(notifyStateChangeChannel: Boolean)
 
     /** Reads the RSSI for a connected remote device */
-    suspend fun readRemoteRssi(): Int
+    actual suspend fun readRemoteRssi(): Int
 
     /**
      * Use this method only if needed, and do so carefully.
@@ -129,7 +109,7 @@ interface GattConnection {
      * Throws an [OperationInitiationFailedException] if the device is not connected.
      */
     @RequiresApi(21)
-    fun requestPriority(priority: Int)
+    actual fun requestPriority(priority: Int)
 
     /**
      * This is usually the first call you make after calling [connect].
@@ -137,7 +117,7 @@ interface GattConnection {
      * Discovers services offered by the remote device as well as its characteristics and
      * its descriptors.
      */
-    suspend fun discoverServices(): List<BluetoothGattService>
+    actual suspend fun discoverServices(): List<CMBluetoothGattService>
 
     /**
      * **Note:** You can use [openNotificationSubscription] that automatically calls this function
@@ -151,7 +131,10 @@ interface GattConnection {
      * [this video](https://youtu.be/qx55Sa8UZAQ?t=28m30s) is **4 on Android 4.3**,
      * 7 on Android 4.4, and 15 on Android 5.0+.
      */
-    fun setCharacteristicNotificationsEnabled(characteristic: BGC, enable: Boolean)
+    actual fun setCharacteristicNotificationsEnabled(
+        characteristic: BGC,
+        enable: Boolean
+    )
 
     /**
      * Enables notifications for that [characteristic] client-side (you still need to enable it
@@ -167,22 +150,22 @@ interface GattConnection {
      * You can enable notifications on the remote device before or after calling this function, both
      * ways, notifications will be able to arrive once enabling on remote device completes.
      */
-    fun openNotificationSubscription(
+    actual fun openNotificationSubscription(
         characteristic: BGC,
-        disableNotificationsOnChannelClose: Boolean = true
+        disableNotificationsOnChannelClose: Boolean
     ): ReceiveChannel<BGC>
 
     /**
      * Checks that the passed [characteristic] supports notifications (it should come from
      * [discoverServices]), and writes the [clientCharacteristicConfiguration] with
-     * [BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE] if [enable] is true, or
-     * [BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE] otherwise.
+     * [CMBluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE] if [enable] is true, or
+     * [CMBluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE] otherwise.
      *
      * If successful, notifications for that characteristic should be enabled on the remote device
      * and you can now receive them from [openNotificationSubscription] (or from [notifyChannel] if
      * you called [setCharacteristicNotificationsEnabled] beforehand).
      */
-    suspend fun setCharacteristicNotificationsEnabledOnRemoteDevice(
+    actual suspend fun setCharacteristicNotificationsEnabledOnRemoteDevice(
         characteristic: BGC,
         enable: Boolean
     )
@@ -197,19 +180,19 @@ interface GattConnection {
      * @param uuid UUID of the requested service
      * @return The service of the requested UUID if supported by the remote device, or null
      */
-    fun getService(uuid: UUID): BluetoothGattService?
+    actual fun getService(uuid: CMUUID): CMBluetoothGattService?
 
-    suspend fun readCharacteristic(characteristic: BGC): BGC
-    suspend fun writeCharacteristic(characteristic: BGC): BGC
+    actual suspend fun readCharacteristic(characteristic: BGC): BGC
+    actual suspend fun writeCharacteristic(characteristic: BGC): BGC
     @RequiresApi(19)
-    suspend fun reliableWrite(writeOperations: suspend GattConnection.() -> Unit)
+    actual suspend fun reliableWrite(writeOperations: suspend GattConnection.() -> Unit)
 
-    suspend fun readDescriptor(desc: BGD): BGD
-    suspend fun writeDescriptor(desc: BGD): BGD
+    actual suspend fun readDescriptor(desc: BGD): BGD
+    actual suspend fun writeDescriptor(desc: BGD): BGD
     @RequiresApi(26)
-    suspend fun readPhy(): Phy
+    actual suspend fun readPhy(): Phy
 
-    suspend fun requestMtu(mtu: Int): Int
+    actual suspend fun requestMtu(mtu: Int): Int
 
     /**
      * **You should totally use this channel and implement the appropriate behavior for a production
@@ -225,7 +208,7 @@ interface GattConnection {
      * gets out of range for example. It's then up to you to decide to retry [connect] a few times,
      * periodically, alert the user or call [close].
      */
-    val stateChangeChannel: ReceiveChannel<StateChange>
+    actual val stateChangeChannel: ReceiveChannel<StateChange>
 
     /**
      * Receives all characteristic update notifications.
@@ -242,8 +225,20 @@ interface GattConnection {
      * on the remote device (you can enable it with the
      * [setCharacteristicNotificationsEnabledOnRemoteDevice] function).
      */
-    val notifyChannel: ReceiveChannel<BGC>
+    actual val notifyChannel: ReceiveChannel<BGC>
 
-    data class StateChange internal constructor(val status: Int, val newState: Int)
-    data class Phy(val tx: Int, val rx: Int)
 }
+
+class ConnectionSettings(
+    val autoConnect: Boolean,
+    val allowAutoConnect: Boolean,
+    val disconnectOnClose: Boolean,
+    val transport: Int,
+    val phy: Int
+)
+
+actual typealias CMUUID = java.util.UUID
+
+actual typealias CMBluetoothDevice = android.bluetooth.BluetoothDevice
+
+actual typealias CMBluetoothGattService = android.bluetooth.BluetoothGattService
