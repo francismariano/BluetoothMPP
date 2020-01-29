@@ -1,9 +1,5 @@
 package com.github.francismariano.bluetoothMPP
 
-import CMBluetoothDevice
-import CMBluetoothGattService
-import Phy
-import StateChange
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.*

@@ -1,6 +1,5 @@
-import com.github.francismariano.bluetoothMPP.BGC
-import com.github.francismariano.bluetoothMPP.BGD
-import com.github.francismariano.bluetoothMPP.ExperimentalBleGattCoroutinesCoroutinesApi
+package com.github.francismariano.bluetoothMPP
+
 import kotlinx.coroutines.channels.ReceiveChannel
 
 actual class CMBluetoothGattService

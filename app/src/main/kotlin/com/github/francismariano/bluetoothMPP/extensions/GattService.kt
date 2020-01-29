@@ -1,6 +1,6 @@
 package com.github.francismariano.bluetoothMPP.extensions
 
-import GattConnection
+import com.github.francismariano.bluetoothMPP.GattConnection
 import android.bluetooth.BluetoothGattService
 import androidx.annotation.RequiresApi
 import com.github.francismariano.bluetoothMPP.BGC

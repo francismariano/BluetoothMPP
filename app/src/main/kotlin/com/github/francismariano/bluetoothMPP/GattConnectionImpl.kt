@@ -1,16 +1,9 @@
 package com.github.francismariano.bluetoothMPP
 
-import CMBluetoothDevice
-import CMBluetoothGattService
-import CMUUID
-import ConnectionSettings
-import GattConnection
-import GattConnection.Companion.clientCharacteristicConfiguration
-import Phy
-import StateChange
 import android.bluetooth.BluetoothProfile
 import android.os.Build.VERSION.SDK_INT
 import androidx.annotation.RequiresApi
+import com.github.francismariano.bluetoothMPP.GattConnection.Companion.clientCharacteristicConfiguration
 import com.github.francismariano.bluetoothMPP.extensions.offerCatching
 import com.github.francismariano.bluetoothMPP.extensions.withCloseHandler
 import kotlinx.coroutines.*
