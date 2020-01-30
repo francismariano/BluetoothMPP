@@ -2,7 +2,6 @@ package com.github.francismariano.bluetoothMPP
 
 import kotlinx.coroutines.channels.ReceiveChannel
 
-actual class CMBluetoothGattService
 @ExperimentalBleGattCoroutinesCoroutinesApi
 actual interface GattConnection {
     actual companion object {
@@ -56,5 +55,14 @@ actual interface GattConnection {
 
 }
 
-actual class CMUUID
-actual class CMBluetoothDevice
+class ConnectionSettings(
+    val autoConnect: Boolean,
+    val allowAutoConnect: Boolean,
+    val disconnectOnClose: Boolean,
+    val transport: Int,
+    val phy: Int
+)
+
+actual typealias CMUUID = platform.CoreBluetooth.CBUUID
+actual typealias CMBluetoothDevice = platform.CoreBluetooth.CBCentralManager
+actual typealias CMBluetoothGattService = platform.CoreBluetooth.CBService
