@@ -1,4 +1,4 @@
-include ':app'
-rootProject.name = "BluetoothMPP"
+include ':bluetoothmpp'
+rootProject.name = "bluetooth-mpp"
 
 enableFeaturePreview("GRADLE_METADATA")
